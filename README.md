@@ -6,13 +6,13 @@ Dies ist ein einfaches Chatbot-Projekt, das mit Django und ChatterBot erstellt w
 
 - Benutzerfreundliche Oberfläche
 - Antwortet auf vordefinierte Fragen
-- Moderne Designanpassungen
+- Moderne Designanpassungen mit css
 - Verwendet ChatterBot für einfache Konversationslogik
 
 ## Voraussetzungen
 
-- Python 3.6 oder höher
-- Django 4.2.5 oder höher
+- Python 3.6 
+- Django 4.2.5 
 - Chatterbot
 
 ## Installation
