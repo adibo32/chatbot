@@ -1,0 +1,121 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <!-- Einbinden von Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-box">
+            {% for message in messages %}
+                <div class="message">{{ message.text }}</div>
+            {% endfor %}
+        </div>
+        <input type="text" id="chat-input" name="userMessage" placeholder="Type your message...">
+        <button id="send-btn">Send</button>
+    </div>
+    <script>
+        function getUserResponse() {
+            var userText = $('#chat-input').val();
+            var userHTML = "<p class='userText'>User: <span>" + userText + "</span></p>";
+            $('#chat-input').val("");
+            $('#chat-box').append(userHTML);
+
+            $.get('/chat/getResponse', {userMessage: userText})
+              .done(function(data) {
+                  var returnedMessage = "<p class='botText'>Chatbot: <span>" + data + "</span></p>";
+                  $('#chat-box').append(returnedMessage);
+              })
+              .fail(function() {
+                  console.error('Error: Unable to get response from the server.');
+              });
+        }
+
+        $('#send-btn').click(function() {
+            getUserResponse();
+        });
+    </script>
+</body>
+</html>
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: linear-gradient(to right, #cb2111 0%, #fcfc25 100%);
+    }
+    
+    #chat-container {
+        width: 350px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    #chat-box {
+        height: 300px;
+        overflow-y: auto;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        background: #f9f9f9;
+    }
+    
+    .message {
+        margin-bottom: 10px;
+        padding: 8px;
+        border-radius: 20px;
+        background-color: #e0e0e0;
+        width: fit-content;
+        word-wrap: break-word;
+    }
+    
+    .userText {
+        background-color: #c43903;
+        color: white;
+        align-self: flex-end;
+    }
+    
+    .botText {
+        background-color: #ffcd19;
+        color: black;
+        align-self: flex-start;
+    }
+    
+    #chat-input {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    button#send-btn {
+        padding: 10px 20px;
+        background-color: #e8440d;
+        color: rgb(252, 248, 9);
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    button#send-btn:hover {
+        background-color: #3949ab;
+    }
+     
+</style>
